@@ -1,5 +1,15 @@
 const API = (window.THEBES_API_BASE || '').replace(/\/$/, '');
 
+const GENERIC_EMAIL_DOMAINS = new Set([
+  'gmail.com','googlemail.com','yahoo.com','yahoo.co.in','outlook.com','hotmail.com','live.com','msn.com',
+  'icloud.com','me.com','mac.com','aol.com','proton.me','protonmail.com','gmx.com','gmx.net','mail.com',
+  'zoho.com','yandex.com','yandex.ru','rediffmail.com'
+]);
+function isCompanyEmail(email='') {
+  const parts = String(email).trim().toLowerCase().split('@');
+  return parts.length === 2 && parts[0] && parts[1] && !GENERIC_EMAIL_DOMAINS.has(parts[1]);
+}
+
 function statusClass(status='') {
   return status.toLowerCase().replace(/\s+/g,'-');
 }
@@ -45,4 +55,4 @@ async function logout() {
   clearToken();
   location.href='/';
 }
-window.Thebes = {api, escapeHtml, statusClass, showMessage, requireUser, logout, setToken, clearToken};
+window.Thebes = {api, escapeHtml, statusClass, showMessage, requireUser, logout, setToken, clearToken, isCompanyEmail};
